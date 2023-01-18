@@ -60,4 +60,7 @@ crashlytics-build.properties
 
 # Oculus
 Assets/Oculus*
+Assets/Resources/OculusPlatformSettings.asset*
+
+ProjectSettings/wit.config*
 
