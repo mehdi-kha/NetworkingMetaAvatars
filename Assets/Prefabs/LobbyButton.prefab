@@ -70,6 +70,7 @@ GameObject:
   - component: {fileID: 1032011166346441274}
   - component: {fileID: 562942295342771515}
   - component: {fileID: 300137164240446643}
+  - component: {fileID: 9026137410057870892}
   m_Layer: 0
   m_Name: LobbyButton
   m_TagString: Untagged
@@ -86,7 +87,7 @@ Transform:
   m_GameObject: {fileID: 1032011166346441275}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.0416, z: 0.01}
-  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.05}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8204064878338342254}
@@ -210,6 +211,19 @@ MonoBehaviour:
   _whenCancel:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &9026137410057870892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1032011166346441275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf951e8fa732ed34c8667b7ae8c5c64e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _buttonText: {fileID: 7041318655051698878}
 --- !u!1 &1611751261470077931
 GameObject:
   m_ObjectHideFlags: 0
