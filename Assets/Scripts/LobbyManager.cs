@@ -20,7 +20,9 @@ public class LobbyManager
     public async Task OnCreateLobby()
     {
         var lobbyName = GenerateRandomLobbyName();
-        _networkingModel.CurrentLobby = await CreateAndJoinLobbyAsync(lobbyName);
+        var allocationAndJoinCode = await RelayManager.AllocateRelayServerAndGetJoinCode();
+        RelayManager.ConfigureTransportAndStartHost(allocationAndJoinCode.Item1);
+        _networkingModel.CurrentLobby = await CreateAndJoinLobbyAsync(lobbyName, allocationAndJoinCode.Item2);
     }
 
     private string GenerateRandomLobbyName() {
@@ -31,11 +33,17 @@ public class LobbyManager
         return randomString;
     }
 
-    private async Task<Lobby> CreateAndJoinLobbyAsync(string lobbyName)
+    private async Task<Lobby> CreateAndJoinLobbyAsync(string lobbyName, string joinCode)
     {
         int maxPlayers = 4;
         CreateLobbyOptions options = new CreateLobbyOptions();
         options.IsPrivate = false;
+        options.Data = new Dictionary<string, DataObject>()
+        {
+            {
+                "joinCode", new DataObject(DataObject.VisibilityOptions.Member, joinCode)
+            },
+        };
 
         Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, options);
 
