@@ -20,14 +20,14 @@ public class NetworkMenuController : MonoBehaviour
     private void Awake()
     {
         CreateLobbyButton.WhenSelect.AddListener(OnCreateLobbyButtonClicked);
-        NetworkingModel.LobbyIdChanged += OnLobbyIdChanged;
+        NetworkingModel.LobbyChanged += OnLobbyChanged;
         NetworkingModel.LobbyListUpdated += OnLobbyListUpdated;
     }
 
     private void OnDestroy()
     {
         CreateLobbyButton.WhenSelect.RemoveAllListeners();
-        NetworkingModel.LobbyIdChanged -= OnLobbyIdChanged;
+        NetworkingModel.LobbyChanged -= OnLobbyChanged;
         NetworkingModel.LobbyListUpdated -= OnLobbyListUpdated;
     }
 
@@ -42,6 +42,8 @@ public class NetworkMenuController : MonoBehaviour
         {
             var instantiatedButton = Instantiate(LobbyButtonPrefab, _buttonsParent);
             instantiatedButton.Text = lobby.Name;
+            instantiatedButton.Lobby = lobby;
+            instantiatedButton.NetworkingModel = NetworkingModel;
             _lobbyButtons[lobby] = instantiatedButton;
         }
 
@@ -63,8 +65,8 @@ public class NetworkMenuController : MonoBehaviour
         }
     }
 
-    private void OnLobbyIdChanged(string lobbyId)
+    private void OnLobbyChanged(Lobby lobby)
     {
-        _lobbyIdText.text = lobbyId;
+        _lobbyIdText.text = lobby.Name;
     }
 }

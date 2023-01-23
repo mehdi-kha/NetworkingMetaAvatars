@@ -224,6 +224,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _buttonText: {fileID: 7041318655051698878}
+  Button: {fileID: 562942295342771515}
+  NetworkingModel: {fileID: 0}
 --- !u!1 &1611751261470077931
 GameObject:
   m_ObjectHideFlags: 0

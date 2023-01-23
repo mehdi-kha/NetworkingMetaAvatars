@@ -17,10 +17,10 @@ public class LobbyManager
         _networkingModel.CreateLobbyEvent += () => OnCreateLobby();
     }
 
-    public async Task OnCreateLobby() {
+    public async Task OnCreateLobby()
+    {
         var lobbyName = GenerateRandomLobbyName();
-        await CreateAndJoinLobbyAsync(lobbyName);
-        _networkingModel.CurrentLobbyId = lobbyName;
+        _networkingModel.CurrentLobby = await CreateAndJoinLobbyAsync(lobbyName);
     }
 
     private string GenerateRandomLobbyName() {
@@ -31,7 +31,8 @@ public class LobbyManager
         return randomString;
     }
 
-    private async Task CreateAndJoinLobbyAsync(string lobbyName) {
+    private async Task<Lobby> CreateAndJoinLobbyAsync(string lobbyName)
+    {
         int maxPlayers = 4;
         CreateLobbyOptions options = new CreateLobbyOptions();
         options.IsPrivate = false;
@@ -40,6 +41,8 @@ public class LobbyManager
 
         // Heartbeat the lobby every 15 seconds.
         HeartbeatLobbyAsync(lobby.Id, 15);
+
+        return lobby;
     }
 
     private async Task HeartbeatLobbyAsync(string lobbyId, int waitTimeSeconds)

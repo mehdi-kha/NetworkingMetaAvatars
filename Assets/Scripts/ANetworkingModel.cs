@@ -8,14 +8,15 @@ using UnityEngine;
 
 public class ANetworkingModel : ScriptableObject
 {
-    private string _currentLobbyId;
+    private Lobby _currentLobbyId;
     private List<Lobby> _availableLobbies = new();
     public event Action OnLocalPlayerConnected;
     public event Action OnRemotePlayerConnected;
     public event Action OnLocalPlayerDisconnected;
     public event Action OnRemotePlayerDisconnected;
     public event Action CreateLobbyEvent;
-    public event Action<string> LobbyIdChanged;
+    public event Action<Lobby> LobbyChanged;
+    public event Action<Lobby> ConnectToLobbyRequest;
 
     /// <summary>
     ///     Triggered when there are new or removed lobbies. The first argument are the added lobbies,
@@ -40,13 +41,13 @@ public class ANetworkingModel : ScriptableObject
             }
         }
     }
-    public string CurrentLobbyId
+    public Lobby CurrentLobby
     {
         get => _currentLobbyId;
         set
         {
             _currentLobbyId = value;
-            LobbyIdChanged?.Invoke(value);
+            LobbyChanged?.Invoke(value);
         }
     }
 
@@ -75,9 +76,8 @@ public class ANetworkingModel : ScriptableObject
         CreateLobbyEvent?.Invoke();
     }
 
-    public void ConnectToLobby(string lobbyId) {
-        // connect to the lobby on the server
-        // ...
-        CurrentLobbyId = lobbyId;
+    public void ConnectToLobby(Lobby lobby)
+    {
+        ConnectToLobbyRequest?.Invoke(lobby);
     }
 }
