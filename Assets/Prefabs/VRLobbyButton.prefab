@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 300137164240446643}
   - component: {fileID: 9026137410057870892}
   m_Layer: 0
-  m_Name: LobbyButton
+  m_Name: VRLobbyButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -224,8 +224,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _buttonText: {fileID: 7041318655051698878}
+  NetworkingModel: {fileID: 11400000, guid: fafa49896bf0a9847b78ee3c635ab993, type: 2}
   Button: {fileID: 562942295342771515}
-  NetworkingModel: {fileID: 0}
 --- !u!1 &1611751261470077931
 GameObject:
   m_ObjectHideFlags: 0

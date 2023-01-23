@@ -24,23 +24,7 @@ public class NetworkManager : MonoBehaviour
         // TODO improve it by passing it a cancellation token
         _lobbyManager.RefreshLobbyDataAsync(1);
 
-        NetworkingModel.ConnectToLobbyRequest += (a) => OnConnectToLobbyRequest(a);
-    }
-
-    private async Task OnConnectToLobbyRequest(Lobby lobby)
-    {
-        // Connect to the lobby
-        try
-        {
-            await LobbyService.Instance.JoinLobbyByIdAsync(lobby.Id);
-
-            // Update the model, if the connection was successful
-            NetworkingModel.CurrentLobby = lobby;
-        }
-        catch (LobbyServiceException e)
-        {
-            Debug.Log(e);
-        }
+        NetworkingModel.ConnectToLobbyRequest += (a) => _lobbyManager.OnConnectToLobbyRequest(a);
     }
 
     private async Task InitializeServicesAsync()

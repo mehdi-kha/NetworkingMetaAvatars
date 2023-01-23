@@ -6,55 +6,26 @@ using TMPro;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 
-public class NetworkMenuController : MonoBehaviour
+public class NetworkMenuController : ANetworkMenuController
 {
-    [SerializeField] private TextMeshProUGUI _lobbyIdText;
-    [SerializeField] private LobbyButtonController LobbyButtonPrefab;
-    [SerializeField] private Transform _buttonsParent;
-    private Dictionary<Lobby, LobbyButtonController> _lobbyButtons;
     [SerializeField] private float _spaceBetweenButtons; // Unfortunately, it looks like there is not easy way of having a vertical layout, hence this workaround.
-
-    public ANetworkingModel NetworkingModel;
     public PointableUnityEventWrapper CreateLobbyButton;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         CreateLobbyButton.WhenSelect.AddListener(OnCreateLobbyButtonClicked);
-        NetworkingModel.LobbyChanged += OnLobbyChanged;
-        NetworkingModel.LobbyListUpdated += OnLobbyListUpdated;
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         CreateLobbyButton.WhenSelect.RemoveAllListeners();
-        NetworkingModel.LobbyChanged -= OnLobbyChanged;
-        NetworkingModel.LobbyListUpdated -= OnLobbyListUpdated;
     }
 
-    private void OnCreateLobbyButtonClicked()
+    protected override void OnLobbyListUpdated(List<Lobby> addedLobbies, List<Lobby> removedLobbies)
     {
-        NetworkingModel.CreateLobby();
-    }
-
-    private void OnLobbyListUpdated(List<Lobby> addedLobbies, List<Lobby> removedLobbies)
-    {
-        foreach (var lobby in addedLobbies)
-        {
-            var instantiatedButton = Instantiate(LobbyButtonPrefab, _buttonsParent);
-            instantiatedButton.Text = lobby.Name;
-            instantiatedButton.Lobby = lobby;
-            instantiatedButton.NetworkingModel = NetworkingModel;
-            _lobbyButtons[lobby] = instantiatedButton;
-        }
-
-        foreach (var lobby in removedLobbies)
-        {
-            if (_lobbyButtons.ContainsKey(lobby))
-            {
-                Destroy(_lobbyButtons[lobby]);
-                _lobbyButtons.Remove(lobby);
-            }
-        }
+        base.OnLobbyListUpdated(addedLobbies, removedLobbies);
 
         // Update the positions
         var i = 0;
@@ -63,10 +34,5 @@ public class NetworkMenuController : MonoBehaviour
             lobby.Value.transform.localPosition = Vector3.down * _spaceBetweenButtons * i;
             i++;
         }
-    }
-
-    private void OnLobbyChanged(Lobby lobby)
-    {
-        _lobbyIdText.text = lobby.Name;
     }
 }

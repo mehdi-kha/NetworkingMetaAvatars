@@ -71,6 +71,21 @@ public class LobbyManager
         
     }
 
+    public async Task OnConnectToLobbyRequest(Lobby lobby) {
+        // Connect to the lobby
+        try
+        {
+            await LobbyService.Instance.JoinLobbyByIdAsync(lobby.Id);
+
+            // Update the model, if the connection was successful
+            _networkingModel.CurrentLobby = lobby;
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+        }
+    }
+
     private async Task<QueryResponse> FetchLobbiesAsync()
     {
         try
