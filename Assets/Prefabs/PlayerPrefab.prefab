@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22c5f3cf02d0cd4438829e53c7cd6f2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RemoteAvatarPrefab: {fileID: 5406342112679197237, guid: 83c3caf5d86457a46aa679630c3a154f,
+    type: 3}
 --- !u!114 &7913157215643213064
 MonoBehaviour:
   m_ObjectHideFlags: 0

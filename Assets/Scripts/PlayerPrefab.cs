@@ -1,3 +1,4 @@
+using Oculus.Avatar2;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -5,14 +6,16 @@ using UnityEngine;
 
 public class PlayerPrefab : NetworkBehaviour
 {
+    [SerializeField] private OvrAvatarEntity RemoteAvatarPrefab;
+    private OvrAvatarEntity _remoteAvatar;
     public void Start()
     {
         if (!IsLocalPlayer)
         {
-            return;
+            _remoteAvatar = Instantiate(RemoteAvatarPrefab, transform);
         }
 
-        InvokeRepeating("SendClientID", 2f, 2f);
+        //InvokeRepeating("SendClientID", 2f, 2f);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -27,11 +30,11 @@ public class PlayerPrefab : NetworkBehaviour
         Debug.Log($"Message received: {message}");
     }
 
-    void SendClientID()
-    {
-        if (NetworkManager.Singleton.IsClient || NetworkManager.Singleton.IsHost)
-        {
-            SendMessageServerRpc(NetworkManager.Singleton.LocalClientId.ToString());
-        }
-    }
+    //void SendClientID()
+    //{
+    //    if (NetworkManager.Singleton.IsClient || NetworkManager.Singleton.IsHost)
+    //    {
+    //        SendMessageServerRpc(NetworkManager.Singleton.LocalClientId.ToString());
+    //    }
+    //}
 }
