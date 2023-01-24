@@ -83,7 +83,9 @@ public class LobbyManager
         // Connect to the lobby
         try
         {
-            await LobbyService.Instance.JoinLobbyByIdAsync(lobby.Id);
+            var resultLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobby.Id);
+            var joinCode = resultLobby.Data["joinCode"].Value;
+            await RelayManager.StartClientAsync(joinCode);
 
             // Update the model, if the connection was successful
             _networkingModel.CurrentLobby = lobby;

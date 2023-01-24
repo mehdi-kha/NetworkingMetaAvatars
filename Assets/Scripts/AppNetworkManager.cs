@@ -9,7 +9,7 @@ using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 
-public class NetworkManager : MonoBehaviour
+public class AppNetworkManager : MonoBehaviour
 {
     private AuthenticationManager _authenticationManager = new();
     private LobbyManager _lobbyManager;

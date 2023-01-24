@@ -61,4 +61,42 @@ public static class RelayManager
         );
         Unity.Netcode.NetworkManager.Singleton.StartHost();
     }
+
+    // Client
+
+    public static async Task<JoinAllocation> JoinRelayServerFromJoinCode(string joinCode)
+    {
+        JoinAllocation allocation;
+        try
+        {
+            allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
+        }
+        catch
+        {
+            Debug.LogError("Relay create join code request failed");
+            throw;
+        }
+
+        Debug.Log($"client: {allocation.ConnectionData[0]} {allocation.ConnectionData[1]}");
+        Debug.Log($"host: {allocation.HostConnectionData[0]} {allocation.HostConnectionData[1]}");
+        Debug.Log($"client: {allocation.AllocationId}");
+
+        return allocation;
+    }
+
+    public async static Task StartClientAsync(string joinCode)
+    {
+        var allocation = await JoinRelayServerFromJoinCode(joinCode);
+
+        Unity.Netcode.NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(
+            allocation.RelayServer.IpV4,
+            (ushort)allocation.RelayServer.Port,
+            allocation.AllocationIdBytes,
+            allocation.Key,
+            allocation.ConnectionData,
+            allocation.HostConnectionData
+        );
+
+        Unity.Netcode.NetworkManager.Singleton.StartClient();
+    }
 }
