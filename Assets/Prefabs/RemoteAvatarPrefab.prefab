@@ -106,9 +106,7 @@ MonoBehaviour:
   _isLocal: 0
   _loadUserFromCdn: 0
   _deferLoading: 0
-  _assets:
-  - source: 0
-    path: 19
+  _assets: []
   _underscorePostfix: 1
   _overridePostfix: 
   _autoCdnRetry: 1
