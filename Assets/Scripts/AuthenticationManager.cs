@@ -1,21 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
 
-public class AuthenticationManager
+public class AuthenticationManager : MonoBehaviour
 {
-    public async Task Setup() {
+    public bool IsReady;
+    public async void Awake()
+    {
+        await InitializeServicesAsync();
         SetupEvents();
         await SignInAnonymouslyAsync();
+        IsReady = true;
     }
 
     /// <summary>
     ///     Setup the authentication events. Comes from the documentation https://docs.unity.com/authentication/InitializeSDK.html
     /// </summary>
-    void SetupEvents() {
+    void SetupEvents()
+    {
         AuthenticationService.Instance.SignedIn += () => {
             // Shows how to get a playerID
             Debug.Log($"PlayerID: {AuthenticationService.Instance.PlayerId}");
@@ -64,5 +67,10 @@ public class AuthenticationManager
             // Notify the player with the proper error message
             Debug.LogException(ex);
         }
+    }
+
+    private async Task InitializeServicesAsync()
+    {
+        await UnityServices.InitializeAsync();
     }
 }

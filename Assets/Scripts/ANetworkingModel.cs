@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.Services.Authentication;
+using Unity.Services.Core;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 
@@ -17,6 +19,7 @@ public class ANetworkingModel : ScriptableObject
     public event Action CreateLobbyEvent;
     public event Action<Lobby> LobbyChanged;
     public event Action<Lobby> ConnectToLobbyRequest;
+    public event Action RefreshLobbiesRequested;
 
     /// <summary>
     ///     Triggered when there are new or removed lobbies. The first argument are the added lobbies,
@@ -49,6 +52,11 @@ public class ANetworkingModel : ScriptableObject
             _currentLobbyId = value;
             LobbyChanged?.Invoke(value);
         }
+    }
+
+    public void RefreshLobbies()
+    {
+        RefreshLobbiesRequested?.Invoke();
     }
 
     public void ConnectLocalPlayer() {

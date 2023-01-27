@@ -181,7 +181,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.services.vivox": {
-      "version": "15.1.180000-pre.1",
+      "version": "15.1.180001-pre.3",
       "depth": 0,
       "source": "registry",
       "dependencies": {

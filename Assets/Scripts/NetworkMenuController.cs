@@ -10,17 +10,20 @@ public class NetworkMenuController : ANetworkMenuController
 {
     [SerializeField] private float _spaceBetweenButtons; // Unfortunately, it looks like there is not easy way of having a vertical layout, hence this workaround.
     public PointableUnityEventWrapper CreateLobbyButton;
+    public PointableUnityEventWrapper UpdateLobbiesButton;
 
     protected override void Awake()
     {
         base.Awake();
         CreateLobbyButton.WhenSelect.AddListener(OnCreateLobbyButtonClicked);
+        UpdateLobbiesButton.WhenSelect.AddListener(OnUpdateLobbiesButtonClicked);
     }
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
         CreateLobbyButton.WhenSelect.RemoveAllListeners();
+        UpdateLobbiesButton.WhenSelect.RemoveAllListeners();
     }
 
     protected override void OnLobbyListUpdated(List<Lobby> addedLobbies, List<Lobby> removedLobbies)

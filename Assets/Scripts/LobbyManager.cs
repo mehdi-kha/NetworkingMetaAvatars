@@ -15,6 +15,7 @@ public class LobbyManager
         _networkingModel = networkingModel;
 
         _networkingModel.CreateLobbyEvent += () => OnCreateLobby();
+        _networkingModel.RefreshLobbiesRequested += async () => await RefreshLobbies();
     }
 
     public async Task OnCreateLobby()
@@ -72,11 +73,15 @@ public class LobbyManager
     {
         while (true)
         {
-            var queryResponses = await FetchLobbiesAsync();
-            _networkingModel.AvailableLobbies = queryResponses.Results;
+            await RefreshLobbies();
             await Task.Delay(waitTimeSeconds * 1000);
         }
-        
+    }
+
+    private async Task RefreshLobbies()
+    {
+        var queryResponses = await FetchLobbiesAsync();
+        _networkingModel.AvailableLobbies = queryResponses.Results;
     }
 
     public async Task OnConnectToLobbyRequest(Lobby lobby) {

@@ -9,7 +9,7 @@ public abstract class ANetworkMenuController : MonoBehaviour
     [SerializeField] protected TextMeshProUGUI _lobbyIdText;
     [SerializeField] protected ALobbyButtonController LobbyButtonPrefab;
     [SerializeField] protected Transform _buttonsParent;
-    protected Dictionary<Lobby, ALobbyButtonController> _lobbyButtons;
+    protected Dictionary<Lobby, ALobbyButtonController> _lobbyButtons = new();
 
     public ANetworkingModel NetworkingModel;
 
@@ -28,6 +28,11 @@ public abstract class ANetworkMenuController : MonoBehaviour
     protected void OnCreateLobbyButtonClicked()
     {
         NetworkingModel.CreateLobby();
+    }
+
+    protected void OnUpdateLobbiesButtonClicked()
+    {
+        NetworkingModel.RefreshLobbies();
     }
 
     protected virtual void OnLobbyListUpdated(List<Lobby> addedLobbies, List<Lobby> removedLobbies)

@@ -1,34 +1,33 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
-using Unity.Services.Core;
-using Unity.Services.Lobbies;
-using Unity.Services.Lobbies.Models;
 using UnityEngine;
 
 public class AppNetworkManager : MonoBehaviour
 {
-    private AuthenticationManager _authenticationManager = new();
+    [SerializeField] private AuthenticationManager _authenticationManager;
+    [SerializeField] private VivoxManager _vivoxManager;
     private LobbyManager _lobbyManager;
     public ANetworkingModel NetworkingModel;
 
     private async void Start()
     {
-        await InitializeServicesAsync();
-        await _authenticationManager.Setup();
+        while (!_authenticationManager.IsReady)
+        {
+            await Task.Delay(100);
+        }
+
         _lobbyManager = new LobbyManager(NetworkingModel);
 
         // TODO improve it by passing it a cancellation token
-        _lobbyManager.RefreshLobbyDataAsync(1);
+        //_lobbyManager.RefreshLobbyDataAsync(5);
 
-        NetworkingModel.ConnectToLobbyRequest += (a) => _lobbyManager.OnConnectToLobbyRequest(a);
-    }
+        NetworkingModel.ConnectToLobbyRequest += async (lobby) =>
+        { 
+            await _lobbyManager.OnConnectToLobbyRequest(lobby);
 
-    private async Task InitializeServicesAsync()
-    {
-        await UnityServices.InitializeAsync();
+        };
+
+        // Let's just use the Unity authentication player id as the username in Vivox
+        NetworkingModel.LobbyChanged += lobby => _vivoxManager.Login(AuthenticationService.Instance.PlayerId);
     }
 }
