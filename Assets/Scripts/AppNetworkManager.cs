@@ -26,8 +26,5 @@ public class AppNetworkManager : MonoBehaviour
             await _lobbyManager.OnConnectToLobbyRequest(lobby);
 
         };
-
-        // Let's just use the Unity authentication player id as the username in Vivox
-        NetworkingModel.LobbyChanged += lobby => _vivoxManager.Login(AuthenticationService.Instance.PlayerId);
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Unity.Services.Authentication;
 using Unity.Services.Vivox;
 using UnityEngine;
 using VivoxUnity;
@@ -18,6 +19,10 @@ public class VivoxManager : MonoBehaviour
         }
 
         VivoxService.Instance.Initialize();
+
+        // Let's join a voice channel as soon as the user has entered a lobby.
+        // Let's use the Unity authentication player id as the username in Vivox
+        _networkingModel.LobbyChanged += lobby => Login(AuthenticationService.Instance.PlayerId);
     }
 
     public void JoinChannel(string channelName, ChannelType channelType, bool connectAudio, bool connectText, bool transmissionSwitch = true, Channel3DProperties properties = null) {
