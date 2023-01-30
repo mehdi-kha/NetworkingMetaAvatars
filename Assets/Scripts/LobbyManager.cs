@@ -1,21 +1,18 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 
-public class LobbyManager
+public class LobbyManager : MonoBehaviour
 {
-    private ANetworkingModel _networkingModel;
-    public LobbyManager(ANetworkingModel networkingModel)
+    [SerializeField] private ANetworkingModel _networkingModel;
+    private void Start()
     {
-        _networkingModel = networkingModel;
-
-        _networkingModel.CreateLobbyEvent += () => OnCreateLobby();
+        _networkingModel.CreateLobbyEvent += async () => await OnCreateLobby();
         _networkingModel.RefreshLobbiesRequested += async () => await RefreshLobbies();
+        _networkingModel.ConnectToLobbyRequest += async (lobby) => await OnConnectToLobbyRequest(lobby);
     }
 
     public async Task OnCreateLobby()
@@ -49,7 +46,7 @@ public class LobbyManager
         Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, options);
 
         // Heartbeat the lobby every 15 seconds.
-        HeartbeatLobbyAsync(lobby.Id, 15);
+        _ = HeartbeatLobbyAsync(lobby.Id, 15);
 
         return lobby;
     }
