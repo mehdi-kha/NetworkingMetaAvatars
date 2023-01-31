@@ -13,7 +13,7 @@ public class VivoxManager : MonoBehaviour
 
     public async void Start()
     {
-        while (!_authenticationManager.IsReady)
+        while (!_networkingModel.IsAuthenticated)
         {
             await Task.Delay(100);
         }
@@ -25,7 +25,8 @@ public class VivoxManager : MonoBehaviour
         _networkingModel.LobbyChanged += lobby => Login(AuthenticationService.Instance.PlayerId);
     }
 
-    public void JoinChannel(string channelName, ChannelType channelType, bool connectAudio, bool connectText, bool transmissionSwitch = true, Channel3DProperties properties = null) {
+    public void JoinChannel(string channelName, ChannelType channelType, bool connectAudio, bool connectText, bool transmissionSwitch = true, Channel3DProperties properties = null)
+    {
         if (LoginSession.State == LoginState.LoggedIn)
         {
             Channel channel = new Channel(channelName, channelType, properties);
@@ -51,7 +52,8 @@ public class VivoxManager : MonoBehaviour
         }
     }
 
-    public void Login(string displayName = null) {
+    public void Login(string displayName = null)
+    {
         var account = new Account(displayName);
         bool connectAudio = true;
         bool connectText = true;
@@ -79,7 +81,8 @@ public class VivoxManager : MonoBehaviour
 
     // For this example, we immediately join a channel after LoginState changes to LoginState.LoggedIn.
     // In an actual game, when to join a channel will vary by implementation.
-    private void LoginSession_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+    private void LoginSession_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
         var loginSession = (ILoginSession)sender;
         if (e.PropertyName == "State")
         {

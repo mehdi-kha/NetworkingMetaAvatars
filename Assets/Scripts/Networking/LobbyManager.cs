@@ -23,7 +23,8 @@ public class LobbyManager : MonoBehaviour
         _networkingModel.CurrentLobby = await CreateAndJoinLobbyAsync(lobbyName, allocationAndJoinCode.Item2);
     }
 
-    private string GenerateRandomLobbyName() {
+    private string GenerateRandomLobbyName()
+    {
         System.Random random = new System.Random();
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         string randomString = new string(Enumerable.Repeat(chars, 10)
@@ -81,7 +82,8 @@ public class LobbyManager : MonoBehaviour
         _networkingModel.AvailableLobbies = queryResponses.Results;
     }
 
-    public async Task OnConnectToLobbyRequest(Lobby lobby) {
+    public async Task OnConnectToLobbyRequest(Lobby lobby)
+    {
         // Connect to the lobby
         try
         {

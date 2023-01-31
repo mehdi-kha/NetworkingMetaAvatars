@@ -1,25 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Unity.Services.Authentication;
-using Unity.Services.Core;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 
-public class ANetworkingModel : ScriptableObject
+public abstract class ANetworkingModel : ScriptableObject
 {
     private Lobby _currentLobbyId;
     private List<Lobby> _availableLobbies = new();
-    public event Action OnLocalPlayerConnected;
-    public event Action OnRemotePlayerConnected;
-    public event Action OnLocalPlayerDisconnected;
-    public event Action OnRemotePlayerDisconnected;
+    private bool _isAuthenticated;
     public event Action CreateLobbyEvent;
     public event Action<Lobby> LobbyChanged;
     public event Action<Lobby> ConnectToLobbyRequest;
     public event Action RefreshLobbiesRequested;
+    public event Action<bool> AuthenticatedEvent;
 
     /// <summary>
     ///     Triggered when there are new or removed lobbies. The first argument are the added lobbies,
@@ -54,29 +48,19 @@ public class ANetworkingModel : ScriptableObject
         }
     }
 
+    public bool IsAuthenticated
+    {
+        get => _isAuthenticated;
+        set
+        {
+            _isAuthenticated = value;
+            AuthenticatedEvent?.Invoke(value);
+        }
+    }
+
     public void RefreshLobbies()
     {
         RefreshLobbiesRequested?.Invoke();
-    }
-
-    public void ConnectLocalPlayer() {
-        IsLocalPlayerConnected = true;
-        OnLocalPlayerConnected?.Invoke();
-    }
-
-    public void ConnectRemotePlayer(string playerId) {
-        RemotePlayerIds.Add(playerId);
-        OnRemotePlayerConnected?.Invoke();
-    }
-
-    public void DisconnectLocalPlayer() {
-        IsLocalPlayerConnected = false;
-        OnLocalPlayerDisconnected?.Invoke();
-    }
-
-    public void DisconnectRemotePlayer(string playerId) {
-        RemotePlayerIds.Remove(playerId);
-        OnRemotePlayerDisconnected?.Invoke();
     }
 
     public void CreateLobby()

@@ -4,7 +4,7 @@ using TMPro;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 
-public class ALobbyButtonController : MonoBehaviour
+public abstract class ALobbyButtonController : MonoBehaviour
 {
     [SerializeField] protected TMP_Text _buttonText;
     public string Text

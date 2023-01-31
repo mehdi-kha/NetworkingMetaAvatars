@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class AuthenticationManager : MonoBehaviour
 {
-    public bool IsReady;
+    [SerializeField] private ANetworkingModel _networkingModel;
     public async void Awake()
     {
         await InitializeServicesAsync();
         SetupEvents();
         await SignInAnonymouslyAsync();
-        IsReady = true;
+        _networkingModel.IsAuthenticated = true;
     }
 
     /// <summary>
@@ -45,7 +45,8 @@ public class AuthenticationManager : MonoBehaviour
     /// <summary>
     ///     Sign in anonymously. See documentation https://docs.unity.com/authentication/UsingAnonSignIn.html
     /// </summary>
-    async Task SignInAnonymouslyAsync() {
+    async Task SignInAnonymouslyAsync()
+    {
         try
         {
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
